@@ -6,8 +6,8 @@ metadata:
   template_author: admin
 
 imports:
-  - git://profile-types/types/node_appcontainer/appcontainer.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git?ref=feature/CNM-40
-  - git://profile-types/types/node_serviceroute/serviceroute.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git?ref=feature/CNM-40
+  - git://profile-types/types/node_appcontainer/appcontainer.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git
+  - git://profile-types/types/node_serviceroute/serviceroute.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git
 
 
 dsl_definitions:
