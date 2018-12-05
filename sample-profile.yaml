@@ -7,10 +7,6 @@ metadata:
 
 imports:
   - git://profile-types/types/node_appcontainer/appcontainer.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git?ref=develop
-  - git://profile-types/types/node_container_service/container-service.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git?ref=develop
-  - git://profile-types/types/node_container_route/container-route.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git?ref=develop
-  - git://profile-types/types/node_storage/storage.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git?ref=develop
-
 
 dsl_definitions:
   mongo_tag: &mongo_tag latest
@@ -44,12 +40,6 @@ topology_template:
 
 
   node_templates:
-    my-storage:
-      type: cisco.nodes.Storage.BlockStorage
-      properties:
-        size: 1
-        auto_allocate: false
-
     mongo-ctnr:
       type: cisco.nodes.ScalableContainer
       properties:
@@ -78,35 +68,3 @@ topology_template:
             node: svc-api-ctnr
             capability: tosca.capabilities.Endpoint
             relationship: tosca.relationships.ConnectsTo
-
-    svc-mongo-ctnr:
-      type: cisco.nodes.ContainerService
-      properties:
-        username: { get_input: uname }
-        namespace: { get_input: name_space }
-        password: { get_input: pword }
-        openshift_config: { get_input: oshift_url}
-        hostname: { get_input: hostname }
-        ports:
-          -
-            name: db
-            port: 27017
-            protocol: tcp
-        avail_zone: { get_input: avail_zone }
-        name: mongo-ctnr
-      requirements:
-        - container: mongo-ctnr
-
-    route-mongo-ctnr:
-      type: cisco.nodes.ContainerRoute
-      properties:
-        username: { get_input: uname }
-        namespace: { get_input: name_space }
-        password: { get_input: pword }
-        openshift_config: { get_input: oshift_url}
-        hostname: { get_input: hostname }
-        container_route_target_port: db
-        target_container_service: svc-mongo-ctnr
-        avail_zone: { get_input: avail_zone }
-      requirements:
-        - dependency: svc-mongo-ctnr
