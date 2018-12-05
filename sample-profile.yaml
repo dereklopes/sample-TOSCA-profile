@@ -61,8 +61,6 @@ topology_template:
             name: data
             volume: data
             mount_path: /data
-        readiness_probe: /
-        readiness_probe_port: 27017
         environment:
           CISCO_LC: dev
           SERVICE: http://svc-mongo-ctnr
