@@ -57,9 +57,9 @@ topology_template:
             protocol: tcp
         volumes:
           -
-            name: data
-            volume: data
-            mount_path: /data
+            name: db-data
+            volume: db-data
+            mount_path: /data/db
         environment:
           CISCO_LC: dev
           SERVICE: http://svc-api-ctnr
