@@ -58,14 +58,9 @@ topology_template:
             protocol: tcp
         volumes:
           -
-            name: db
-            volume: mongo-storage
-            mount_path: /data/db
-        volumes:
-          -
-            name: conf
-            volume: mongo-conf
-            mount_path: /data/configdb
+            name: data
+            volume: data
+            mount_path: /data
         readiness_probe: /
         readiness_probe_port: 27017
         environment:
