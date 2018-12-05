@@ -1,0 +1,85 @@
+tosca_definitions_version: alien_dsl_1_2_0
+metadata:
+  description: Alien4Cloud generated service template
+  template_name: ReferenceApp
+  template_version: 0.1.0
+  template_author: admin
+
+imports:
+  - git://profile-types/types/node_appcontainer/appcontainer.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git?ref=feature/CNM-40
+  - git://profile-types/types/node_serviceroute/serviceroute.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git?ref=feature/CNM-40
+
+
+dsl_definitions:
+  mongo_tag: &mongo_tag latest
+
+topology_template:
+  inputs:
+    hostname:
+      type: string
+      required: true
+      description: Resolved domain name
+    name_space:
+      type: string
+      required: true
+      description: project name
+    avail_zone:
+      description: DC Region
+      type: string
+      required: true
+    uname:
+      type: string
+      required: true
+      description: username for OpenShift
+    pword:
+      type: SecureToken
+      required: true
+      description: password for OpenShift
+    oshift_url:
+      type: string
+      required: false
+      description: openshift url is used when openshift_config is set. Example, 192.168.99.100:8443
+
+  node_templates:
+    mongo-ctr:
+      type: cisco.nodes.ScalableContainer
+      properties:
+        openshift_config: { get_input: oshift_url}
+        username: { get_input: uname }
+        namespace: { get_input: name_space }
+        password: { get_input: pword }
+        image_name: mongo
+        image_tag: *mongo_tag
+        avail_zone: { get_input: avail_zone }
+        ports:
+          -
+            name: db
+            port: 27017
+            protocol: tcp
+        readiness_probe: /
+        readiness_probe_port: 27017
+        environment:
+          CISCO_LC: dev
+          SERVICE: http://svc-mongo-ctnr
+      requirements:
+        - endpoint:
+            node: svc-mongo-ctnr
+            capability: tosca.capabilities.Endpoint
+            relationship: tosca.relationships.ConnectsTo
+
+    svc-api-ctnr:
+      type: cisco.nodes.ServiceRoute # template represents service+route
+      properties:
+        openshift_config: { get_input: oshift_url}
+        username: { get_input: uname }
+        namespace: { get_input: name_space }
+        password: { get_input: pword }
+        ports:
+          -
+            name: db
+            port: 27017
+            protocol: tcp
+        avail_zone: { get_input: avail_zone }
+        name: mongo-ctnr
+      requirements:
+        - container: mongo-ctnr
