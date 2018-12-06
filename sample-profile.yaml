@@ -42,11 +42,17 @@ topology_template:
       description: openshift url is used when openshift_config is set. Example, 192.168.99.100:8443
 
   node_templates:
-    my-storage:
+    data:
       type: cisco.nodes.Storage.BlockStorage
       properties:
-        size: 1
-        auto_allocate: false
+        size: 10
+        auto_allocate: true
+
+    conf:
+      type: cisco.nodes.Storage.BlockStorage
+      properties:
+        size: 5
+        auto_allocate: true
 
     mongo-ctr:
       type: cisco.nodes.ScalableContainer
@@ -66,8 +72,12 @@ topology_template:
         volumes:
           -
             name: data
-            volume: my-storage
-            mount_path: /data
+            volume: data
+            mount_path: /data/db
+          -
+            name: conf
+            volume: conf
+            mount_path: /data/configdb
         readiness_probe: /
         readiness_probe_port: 27017
         environment:
