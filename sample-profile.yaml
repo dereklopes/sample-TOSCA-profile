@@ -8,6 +8,7 @@ metadata:
 imports:
   - git://profile-types/types/node_appcontainer/appcontainer.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git
   - git://profile-types/types/node_serviceroute/serviceroute.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git
+  - git://profile-types/types/node_storage/storage.yaml@https://gitscm.cisco.com/scm/ccdev/profile-types.git
 
 
 dsl_definitions:
@@ -41,6 +42,12 @@ topology_template:
       description: openshift url is used when openshift_config is set. Example, 192.168.99.100:8443
 
   node_templates:
+    my-storage:
+      type: cisco.nodes.Storage.BlockStorage
+      properties:
+        size: 1
+        auto_allocate: false
+
     mongo-ctr:
       type: cisco.nodes.ScalableContainer
       properties:
@@ -56,6 +63,11 @@ topology_template:
             name: db
             port: 27017
             protocol: tcp
+        volumes:
+          -
+            name: data
+            volume: my-storage
+            mount_path: /data
         readiness_probe: /
         readiness_probe_port: 27017
         environment:
