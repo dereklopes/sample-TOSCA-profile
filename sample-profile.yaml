@@ -69,8 +69,6 @@ topology_template:
             name: mongodb
             volume: mongo-storage
             mount_path: /data/db
-        readiness_probe: /
-        readiness_probe_port: 27017
         environment:
           CISCO_LC: dev
           SERVICE: http://svc-mongo-ctnr
@@ -87,6 +85,8 @@ topology_template:
         username: { get_input: uname }
         namespace: { get_input: name_space }
         password: { get_input: pword }
+        hostname: { get_input: hostname }
+        route_target_port: db
         ports:
           -
             name: db
