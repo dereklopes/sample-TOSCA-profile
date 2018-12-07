@@ -58,6 +58,7 @@ topology_template:
         image_name: delopes/mongo
         image_tag: *mongo_tag
         avail_zone: { get_input: avail_zone }
+        replicas: 1
         ports:
           -
             name: db
