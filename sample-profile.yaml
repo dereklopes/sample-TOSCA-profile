@@ -78,7 +78,7 @@ topology_template:
             capability: tosca.capabilities.Endpoint
             relationship: tosca.relationships.ConnectsTo
 
-    svc-api-ctnr:
+    svc-mongo-ctnr:
       type: cisco.nodes.ServiceRoute # template represents service+route
       properties:
         openshift_config: { get_input: oshift_url}
@@ -96,3 +96,17 @@ topology_template:
         name: mongo-ctnr
       requirements:
         - container: mongo-ctnr
+
+    route-mongo-ctnr:
+      type: cisco.nodes.ContainerRoute
+      properties:
+        username: { get_input: uname }
+        namespace: { get_input: name_space }
+        password: { get_input: pword }
+        openshift_config: { get_input: oshift_url}
+        hostname: { get_input: hostname }
+        container_route_target_port: web
+        target_container_service: svc-mongo-ctnr
+        avail_zone: { get_input: avail_zone }
+      requirements:
+        - dependency: svc-mongo-ctnr
