@@ -105,7 +105,7 @@ topology_template:
         password: { get_input: pword }
         openshift_config: { get_input: oshift_url}
         hostname: { get_input: hostname }
-        container_route_target_port: web
+        container_route_target_port: db
         target_container_service: svc-mongo-ctnr
         avail_zone: { get_input: avail_zone }
       requirements:
