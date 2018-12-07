@@ -49,7 +49,7 @@ topology_template:
         size: 100
         auto_allocate: false
 
-    mongo-ctr:
+    mongo-ctnr:
       type: cisco.nodes.ScalableContainer
       properties:
         openshift_config: { get_input: oshift_url}
