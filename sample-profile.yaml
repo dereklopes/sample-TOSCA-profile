@@ -74,10 +74,7 @@ topology_template:
           CISCO_LC: dev
           SERVICE: http://svc-mongo-ctnr
       requirements:
-        - endpoint:
-            node: svc-mongo-ctnr
-            capability: tosca.capabilities.Endpoint
-            relationship: tosca.relationships.ConnectsTo
+        - dependency: mongo-storage
 
     svc-mongo-ctnr:
       type: cisco.nodes.ContainerService
